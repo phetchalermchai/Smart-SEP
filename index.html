@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ราชการพอเพียง - แนวทางเพื่อข้าราชการยุคใหม่</title>
+    
+    <!-- Favicon (Leaf Icon) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%2310b981' d='M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 223.89c-12.72 59.7-33.28 131.32-59.23 192.48-16.5 38.84-10.22 80.78 8.2 105.68-69.77-43.19-83.28-118.52-62.63-188.34 13.96-47.23 22.37-88.93 22.37-88.93 0-21.6-17.69-33.87-33.38-26.53-46.46 21.73-92.18 63.26-120 149.33C-12.92 440.62-2.14 493.6 12.42 512c4.28-10.77 14.29-26.77 28.55-42.26 36.49-39.62 86.85-59.76 112-63.88 30.76-5 32.17-3.7 33.41-2.72 2.61 2.06 3.64 7.34-.78 12.34-13.66 15.44-29.31 33.39-37 64.11 64.11-11.7 126.42-63.12 151.28-133.1 28.77-81 40.29-165.93 130.92-247.13 22.45-20.11 57.62-31.48 83.76-29.47z'/%3E%3C/svg%3E">
+    
+    <!-- Google Fonts: Itim -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Set Itim as the default sans-serif font
+                        sans: ['Itim', 'cursive'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981', // Emerald
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        },
+                        secondary: '#34d399',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-checkbox input:checked + div {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        .custom-checkbox input:checked + div svg {
+            display: block;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #10b981;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px; /* Approximate height */
+            opacity: 1;
+        }
+
+        /* Markdown Styles for Itim - Increased Sizes */
+        .prose strong { color: #047857; font-weight: 600; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
+        .prose h3 { font-family: 'Itim', cursive; font-weight: 400; margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.5rem; }
+        .prose p, .prose li { font-size: 1.125rem; }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-700 antialiased selection:bg-primary-500 selection:text-white overflow-x-hidden text-lg">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="#" class="text-2xl md:text-3xl font-bold text-primary-700 flex items-center gap-2 z-50">
+                    <i class="fa-solid fa-leaf text-primary-500"></i>
+                    <span class="truncate">Smart SEP</span>
+                </a>
+
+                <!-- Desktop Menu (Increased font size to text-xl) -->
+                <div class="hidden lg:flex space-x-8 font-medium text-xl text-gray-600 items-center">
+                    <a href="#intro" class="hover:text-primary-600 transition-colors">ทำไมต้อง SEP?</a>
+                    <a href="#principles" class="hover:text-primary-600 transition-colors">3 ห่วง 2 เงื่อนไข</a>
+                    <a href="#ai-consultant" class="hover:text-primary-600 transition-colors flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-base"></i> AI ปรึกษางาน</a>
+                    <a href="#checklist" class="hover:text-primary-600 transition-colors">Checklist</a>
+                    <a href="#contact" class="px-6 py-2 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-500/30 text-lg">
+                        ติดต่อเรา
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-primary-600 focus:outline-none z-50">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="lg:hidden bg-white border-t border-gray-100 mt-4 -mx-6 px-6 shadow-lg">
+                <div class="flex flex-col space-y-4 py-6 font-medium text-xl text-gray-600">
+                    <a href="#intro" class="hover:text-primary-600 mobile-link">ทำไมต้อง SEP?</a>
+                    <a href="#principles" class="hover:text-primary-600 mobile-link">3 ห่วง 2 เงื่อนไข</a>
+                    <a href="#ai-consultant" class="hover:text-primary-600 mobile-link flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-base"></i> AI ปรึกษางาน</a>
+                    <a href="#checklist" class="hover:text-primary-600 mobile-link">Checklist</a>
+                    <a href="#contact" class="hover:text-primary-600 mobile-link text-primary-600 font-bold">ติดต่อเรา</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
+        <!-- Abstract Background Shapes -->
+        <div class="absolute top-0 right-0 w-2/3 md:w-1/2 h-full bg-gradient-to-bl from-primary-50 to-transparent opacity-60 z-0 rounded-bl-[100px]"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-primary-100 rounded-full blur-3xl opacity-30 z-0 translate-y-1/2 -translate-x-1/2"></div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-base md:text-lg font-semibold mb-6 fade-up">
+                รัฐบาลยุคใหม่ ใส่ใจความยั่งยืน
+            </span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-relaxed fade-up" style="transition-delay: 100ms;">
+                การประยุกต์ใช้หลัก<br>
+                <span class="text-gradient inline-block md:pb-4">ปรัชญาเศรษฐกิจพอเพียง</span><br>
+                ในการปฏิบัติราชการ
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-10 fade-up px-2 font-sans" style="transition-delay: 200ms;">
+                แนวทางเพื่อความยั่งยืน สมดุล และธรรมาภิบาล สำหรับข้าราชการยุคใหม่
+                สร้างภูมิคุ้มกันให้องค์กรและตนเองในยุค VUCA World
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 fade-up px-4" style="transition-delay: 300ms;">
+                <a href="#ai-consultant" class="px-8 py-3 bg-primary-600 text-white text-xl rounded-full hover:bg-primary-700 transition-all shadow-xl hover:shadow-primary-600/30 transform hover:-translate-y-1 flex items-center justify-center gap-2 w-full md:w-auto">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> ปรึกษา AI
+                </a>
+                <a href="#application" class="px-8 py-3 border border-gray-300 text-gray-600 text-xl rounded-full hover:border-primary-500 hover:text-primary-600 transition-all bg-white flex items-center justify-center w-full md:w-auto">
+                    แนวทางปฏิบัติ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro: Why SEP? -->
+    <section id="intro" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-10 md:gap-16">
+                <div class="w-full lg:w-1/2 relative fade-up">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                         <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Compass and Map" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700">
+                         <div class="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent"></div>
+                         <div class="absolute bottom-6 left-6 text-white text-xl md:text-2xl font-semibold">
+                            เข็มทิศแห่งความยั่งยืน
+                         </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 fade-up" style="transition-delay: 200ms;">
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6 relative inline-block">
+                        ทำไมต้องเศรษฐกิจพอเพียง?
+                        <div class="absolute bottom-1 left-0 w-1/2 h-2 bg-primary-200 -z-10"></div>
+                    </h2>
+                    <p class="text-lg md:text-xl leading-relaxed text-gray-600 mb-6">
+                        ในสภาวะโลกที่มีการเปลี่ยนแปลงอย่างรวดเร็ว (VUCA World) การทำงานราชการต้องการ <span class="text-primary-600 font-bold">"เข็มทิศ"</span> ที่ช่วยในการตัดสินใจที่ถูกต้องและยั่งยืน
+                    </p>
+                    <p class="text-lg md:text-xl leading-relaxed text-gray-600 mb-8">
+                        ปรัชญาเศรษฐกิจพอเพียง (SEP) ไม่ใช่เพียงเรื่องการเกษตร แต่เป็น <strong>หลักการบริหารจัดการทรัพยากรและการดำเนินชีวิต</strong> ที่สร้าง "ภูมิคุ้มกัน" ให้กับองค์กรและตนเอง
+                    </p>
+                    <ul class="space-y-4 text-gray-700 text-base md:text-lg">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-check-circle text-primary-500 text-xl md:text-2xl"></i> สร้างสมดุล Work-Life Balance
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-check-circle text-primary-500 text-xl md:text-2xl"></i> สร้างความโปร่งใสและตรวจสอบได้
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-check-circle text-primary-500 text-xl md:text-2xl"></i> สร้างภูมิคุ้มกันต่อวิกฤต
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Principles (3 Rings) -->
+    <section id="principles" class="py-16 md:py-24 bg-primary-50 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-12 fade-up">
+                <span class="text-primary-600 font-bold tracking-wider uppercase text-sm md:text-base">หลักการสำคัญ</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mt-2">หลัก 3 ห่วง (3 หลักการ)</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 fade-up" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 text-2xl md:text-3xl mb-6">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">ความพอประมาณ</h3>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed">
+                        ปฏิบัติหน้าที่อย่างพอดี ไม่ตึงหรือหย่อนเกินไป ใช้งบประมาณอย่างคุ้มค่า บริหารเวลาอย่างเหมาะสม
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 fade-up" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 text-2xl md:text-3xl mb-6">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">ความมีเหตุผล</h3>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed">
+                        ตัดสินใจบนพื้นฐานของกฎหมาย กฎระเบียบ และข้อมูลวิชาการ คำนึงถึงประโยชน์ส่วนรวม
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 fade-up" style="transition-delay: 300ms;">
+                    <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 text-2xl md:text-3xl mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">การมีภูมิคุ้มกัน</h3>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed">
+                        บริหารความเสี่ยง (Risk Management) มีแผนสำรอง ป้องกันการทุจริต และพัฒนาทีมงาน
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Foundations (2 Conditions) -->
+    <section class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="bg-primary-900 rounded-3xl p-8 md:p-16 text-white shadow-2xl overflow-hidden relative fade-up">
+                <!-- Decoration -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center relative z-10">2 เงื่อนไข: ฐานรากของการปฏิบัติงาน</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 relative z-10">
+                    <!-- Knowledge -->
+                    <div class="flex gap-4 md:gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg bg-primary-700 flex items-center justify-center text-xl md:text-2xl">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-4 text-primary-100">เงื่อนไขความรู้</h3>
+                            <ul class="space-y-3 opacity-90 text-base md:text-lg">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> รู้กฎหมายและระเบียบปฏิบัติอย่างถ่องแท้</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> Continuous Learning หมั่นศึกษาเพิ่มเติม</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> ใช้ Data-driven ในการวางแผน</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Morality -->
+                    <div class="flex gap-4 md:gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg bg-primary-700 flex items-center justify-center text-xl md:text-2xl">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-4 text-primary-100">เงื่อนไขคุณธรรม</h3>
+                            <ul class="space-y-3 opacity-90 text-base md:text-lg">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> มีความซื่อสัตย์สุจริต (Integrity)</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> ขยัน อดทน เพียรพยายาม</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-angle-right mt-1 text-primary-400"></i> ไม่เบียดเบียนประชาชน แบ่งปัน</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Consultant -->
+    <section id="ai-consultant" class="py-16 md:py-24 bg-gradient-to-b from-white to-primary-50 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-10 fade-up">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-sm md:text-base font-semibold mb-4">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI by น้องพอเพียง
+                </span>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800">ปรึกษาปัญหาการงานวิถีพอเพียง</h2>
+                <p class="text-gray-600 mt-4 text-base md:text-xl max-w-2xl mx-auto">
+                    พิมพ์สถานการณ์ หรือปัญหาในการทำงานของคุณลงไป AI จะช่วยวิเคราะห์และเสนอแนะแนวทางแก้ไขตามหลัก 3 ห่วง 2 เงื่อนไข
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto fade-up">
+                <!-- Input Area -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 mb-8">
+                    <label for="ai-input" class="block text-gray-700 font-semibold mb-2 text-xl">ระบุสถานการณ์ของคุณ:</label>
+                    <textarea id="ai-input" rows="4" class="w-full p-4 rounded-xl border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all resize-none text-gray-700 placeholder-gray-400 text-base md:text-lg" placeholder="ตัวอย่าง: ได้รับมอบหมายให้จัดโครงการอบรม แต่มีงบประมาณจำกัดมาก และเวลากระชั้นชิด กังวลว่างานจะออกมาไม่ดี..."></textarea>
+                    
+                    <div class="flex justify-end mt-4">
+                        <button disabled onclick="askGemini()" id="ai-btn" class="px-6 py-3 md:px-8 md:py-3 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-600/30 flex items-center gap-2 text-base md:text-lg w-full md:w-auto justify-center">
+                            <span>ขอคำแนะนำ ✨</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Area -->
+                <div id="ai-result-container" class="hidden">
+                    <div class="bg-white rounded-2xl shadow-xl border-t-4 border-primary-500 p-6 md:p-8 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-bl-full opacity-50"></div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
+                                <i class="fa-solid fa-robot text-xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800">คำแนะนำจาก AI น้องพอเพียง</h3>
+                        </div>
+                        <div id="ai-loading" class="hidden flex flex-col items-center justify-center py-10">
+                            <div class="loader mb-4"></div>
+                            <p class="text-gray-500 animate-pulse text-base">กำลังวิเคราะห์ตามหลัก 3 ห่วง 2 เงื่อนไข...</p>
+                        </div>
+                        <div id="ai-content" class="prose prose-green max-w-none text-gray-700 text-base md:text-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checklist -->
+    <section id="checklist" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800">Checklist: การประยุกต์ใช้รายวัน</h2>
+                <p class="text-gray-500 mt-4 text-base md:text-xl">ลองสำรวจตนเองในแต่ละวัน เพื่อสร้างนิสัยข้าราชการที่ดี</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-12 fade-up">
+                <div class="space-y-4 md:space-y-6">
+                    <label class="custom-checkbox flex items-center gap-4 cursor-pointer group p-4 hover:bg-primary-50 rounded-lg transition-colors border border-transparent hover:border-primary-100">
+                        <input type="checkbox" class="hidden">
+                        <div class="w-8 h-8 md:w-10 md:h-10 border-2 border-gray-300 rounded-md flex items-center justify-center transition-all bg-white group-hover:border-primary-500 flex-shrink-0">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg md:text-xl font-semibold text-gray-800">วันนี้ฉันทำงานคุ้มค่าหรือไม่?</h4>
+                            <p class="text-sm md:text-base text-gray-500">ด้านความพอประมาณ</p>
+                        </div>
+                    </label>
+
+                    <label class="custom-checkbox flex items-center gap-4 cursor-pointer group p-4 hover:bg-primary-50 rounded-lg transition-colors border border-transparent hover:border-primary-100">
+                        <input type="checkbox" class="hidden">
+                        <div class="w-8 h-8 md:w-10 md:h-10 border-2 border-gray-300 rounded-md flex items-center justify-center transition-all bg-white group-hover:border-primary-500 flex-shrink-0">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg md:text-xl font-semibold text-gray-800">การตัดสินใจของฉันมีเหตุผลรองรับไหม?</h4>
+                            <p class="text-sm md:text-base text-gray-500">ด้านความมีเหตุผล</p>
+                        </div>
+                    </label>
+                    
+                    <label class="custom-checkbox flex items-center gap-4 cursor-pointer group p-4 hover:bg-primary-50 rounded-lg transition-colors border border-transparent hover:border-primary-100">
+                        <input type="checkbox" class="hidden">
+                        <div class="w-8 h-8 md:w-10 md:h-10 border-2 border-gray-300 rounded-md flex items-center justify-center transition-all bg-white group-hover:border-primary-500 flex-shrink-0">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg md:text-xl font-semibold text-gray-800">ฉันพร้อมรับมือถ้างานมีปัญหาหรือไม่?</h4>
+                            <p class="text-sm md:text-base text-gray-500">ด้านภูมิคุ้มกัน</p>
+                        </div>
+                    </label>
+                    
+                    <label class="custom-checkbox flex items-center gap-4 cursor-pointer group p-4 hover:bg-primary-50 rounded-lg transition-colors border border-transparent hover:border-primary-100">
+                        <input type="checkbox" class="hidden">
+                        <div class="w-8 h-8 md:w-10 md:h-10 border-2 border-gray-300 rounded-md flex items-center justify-center transition-all bg-white group-hover:border-primary-500 flex-shrink-0">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg md:text-xl font-semibold text-gray-800">ฉันทำหน้าที่ด้วยความซื่อสัตย์หรือไม่?</h4>
+                            <p class="text-sm md:text-base text-gray-500">ด้านคุณธรรม</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Expected Benefits -->
+    <section class="py-16 md:py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800">ประโยชน์ที่คาดว่าจะได้รับ</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <!-- Person -->
+                <div class="p-6 md:p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary-500 transition-colors duration-300 group fade-up" style="transition-delay: 100ms;">
+                    <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary-100 transition-colors">
+                        <i class="fa-solid fa-user text-3xl md:text-4xl text-gray-400 group-hover:text-primary-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3">ระดับบุคคล</h3>
+                    <p class="text-base md:text-lg text-gray-600">มีความสุข มีเกียรติ ปลอดหนี้สิน และมั่นคงในอาชีพ</p>
+                </div>
+
+                <!-- Organization -->
+                <div class="p-6 md:p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary-500 transition-colors duration-300 group fade-up" style="transition-delay: 200ms;">
+                    <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary-100 transition-colors">
+                        <i class="fa-solid fa-building-columns text-3xl md:text-4xl text-gray-400 group-hover:text-primary-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3">ระดับองค์กร</h3>
+                    <p class="text-base md:text-lg text-gray-600">มีประสิทธิภาพ ลดการรั่วไหล โปร่งใส และมีภาพลักษณ์ที่ดี</p>
+                </div>
+
+                <!-- Public -->
+                <div class="p-6 md:p-8 rounded-2xl bg-white border border-gray-100 hover:border-primary-500 transition-colors duration-300 group fade-up" style="transition-delay: 300ms;">
+                    <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary-100 transition-colors">
+                        <i class="fa-solid fa-users text-3xl md:text-4xl text-gray-400 group-hover:text-primary-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3">ต่อประชาชน</h3>
+                    <p class="text-base md:text-lg text-gray-600">ได้รับบริการที่รวดเร็ว เป็นธรรม และเชื่อมั่นในรัฐ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary-900 text-white pt-16 pb-10" id="contact">
+        <div class="container mx-auto px-6 text-center">
+            <i class="fa-solid fa-quote-left text-3xl md:text-5xl text-primary-500 mb-6 opacity-50"></i>
+            <h2 class="text-2xl md:text-4xl font-medium leading-relaxed max-w-4xl mx-auto mb-8 fade-up">
+                "เศรษฐกิจพอเพียง" ไม่ใช่ทางเลือก แต่เป็น <span class="text-primary-400">"ทางรอด"</span><br>
+                นำพาประเทศไปสู่ความ มั่นคง มั่งคั่ง และยั่งยืน
+            </h2>
+            <div class="w-16 md:w-24 h-1 bg-primary-600 mx-auto rounded-full mb-12"></div>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-left border-t border-primary-800 pt-10">
+                <div>
+                    <h4 class="font-bold text-xl mb-4 text-primary-200">เกี่ยวกับเรา</h4>
+                    <p class="text-base text-gray-400">โครงการส่งเสริมธรรมาภิบาลและการพัฒนาข้าราชการตามแนวทางปรัชญาเศรษฐกิจพอเพียง</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xl mb-4 text-primary-200">เมนูลัด</h4>
+                    <div class="flex flex-col space-y-2 text-base text-gray-400">
+                        <a href="#principles" class="hover:text-white">หลักการ 3 ห่วง</a>
+                        <a href="#checklist" class="hover:text-white">แบบประเมินตนเอง</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xl mb-4 text-primary-200">Q & A</h4>
+                    <p class="text-base text-gray-400 mb-4">แลกเปลี่ยนความคิดเห็น / สอบถามข้อมูลเพิ่มเติม</p>
+                    <div class="flex gap-4">
+                        <a href="https://www.facebook.com/MHESIThailand" target="_blank" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fa-brands fa-facebook-f text-lg"></i></a>
+                        <a href="https://www.youtube.com/user/ScienceThailand" target="_blank" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+                        <a href="mailto:mcs@mhesi.go.th" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fa-solid fa-envelope text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center text-sm text-primary-200">
+                &copy; 2025 กลุ่ม 5 ต้นกล้าข้าราชการ อว. รุ่น 2
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // Gemini API Logic
+        async function askGemini() {
+            const userInput = document.getElementById('ai-input').value.trim();
+            const btn = document.getElementById('ai-btn');
+            const resultContainer = document.getElementById('ai-result-container');
+            const loading = document.getElementById('ai-loading');
+            const content = document.getElementById('ai-content');
+
+            if (!userInput) {
+                alert('กรุณาระบุสถานการณ์ของคุณก่อนขอคำแนะนำครับ');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            resultContainer.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            content.innerHTML = '';
+
+            const apiKey = "AIzaSyAD0XwwDK_L49wwBiB5nfKK2Xm0ThnohX4";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const systemPrompt = "You are an expert in the Sufficiency Economy Philosophy (SEP) for civil servants. Analyze the user's problem and provide advice structured by the 3 Principles (Moderation, Reasonableness, Immunity). Use Thai language. Be polite (use ครับ). Format with Markdown.";
+            const userPrompt = `ช่วยวิเคราะห์และให้คำแนะนำในการแก้ปัญหาหรือปฏิบัติตนตามหลักเศรษฐกิจพอเพียง (3 ห่วง 2 เงื่อนไข) สำหรับสถานการณ์นี้: "${userInput}"`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userPrompt }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+                
+                loading.classList.add('hidden');
+                content.innerHTML = marked.parse(data.candidates[0].content.parts[0].text);
+            } catch (error) {
+                console.error('API Error:', error);
+                loading.classList.add('hidden');
+                content.innerHTML = `<p class="text-red-500">เกิดข้อผิดพลาด: ${error.message}</p>`;
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+    </script>
+</body>
+</html>
