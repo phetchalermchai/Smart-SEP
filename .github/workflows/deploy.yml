@@ -27,7 +27,7 @@ jobs:
       - name: Inject API Key
         # คำสั่งนี้จะค้นหาคำว่า PRE_BUILD_API_KEY ในไฟล์ html และแทนที่ด้วย Secret
         run: |
-          sed -i 's/PRE_BUILD_API_KEY/${{ secrets.GEMINI_KEY }}/g' SEP_CivilService_Final.html
+          sed -i 's/PRE_BUILD_API_KEY/${{ secrets.GEMINI_KEY }}/g' index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
